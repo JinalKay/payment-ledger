@@ -30,7 +30,7 @@ All transfers are atomic. If the "Credit" step fails, the "Debit" step rolls bac
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/YOUR_USERNAME/payment-ledger.git](https://github.com/YOUR_USERNAME/payment-ledger.git)
+    git clone [https://github.com/JinalKay/payment-ledger.git](https://github.com/JinalKay/payment-ledger.git)
     ```
 2.  **Configure Database:**
     Update `src/main/resources/application.properties` with your Postgres credentials.
