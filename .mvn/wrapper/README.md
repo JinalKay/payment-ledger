@@ -1,43 +1,29 @@
-# PaymentLedger (High-Concurrency Wallet Service)
+# High-Performance Payment Ledger System 💸
 
-A backend service designed to handle financial transactions with strict **ACID compliance** and **concurrency control**. 
+A robust, thread-safe financial ledger system built with **Java 17** and **Spring Boot**. This project demonstrates senior-level backend engineering principles required for high-scale payment systems.
 
-This project demonstrates how to solve critical data integrity issues (like the "Lost Update" problem) in distributed systems using **Pessimistic Locking** and **Double-Entry Ledger** principles.
+## 🚀 Key Engineering Features
 
-## 🚀 Tech Stack
-* **Language:** Java 17 (OpenJDK)
-* **Framework:** Spring Boot 3
-* **Database:** PostgreSQL (Relational Data Integrity)
-* **ORM:** Hibernate / Spring Data JPA
-* **Build Tool:** Maven
+* **Pessimistic Locking (Concurrency Control):** Uses Database-level locks (`SELECT FOR UPDATE`) to prevent race conditions during simultaneous transfers.
+* **Idempotency Guarantee:** Implemented an Idempotency Key layer to ensure that duplicate API requests (e.g., from a user double-clicking) do not result in double-charges.
+* **Double-Entry Bookkeeping:** Every transfer creates two immutable transaction records (Debit & Credit), ensuring a perfect audit trail for financial compliance.
+* **Fault Tolerance:** Managed transactions using Spring's `@Transactional` to ensure atomicity—if one part fails, the whole transfer rolls back.
 
-## 🔑 Key Features
+## 🛠 Tech Stack
+* **Language:** Java 17
+* **Framework:** Spring Boot 3.x
+* **Database:** PostgreSQL
+* **ORM:** Spring Data JPA / Hibernate
 
-### 1. Concurrency Control (Row-Level Locking)
-To prevent race conditions where two simultaneous requests could modify the same wallet balance, I implemented **Pessimistic Locking** (`SELECT ... FOR UPDATE`).
-* **Implementation:** `@Lock(LockModeType.PESSIMISTIC_WRITE)` in `WalletRepository`.
-* **Result:** Guarantees data consistency even under high load.
+## 📋 API Endpoints
 
-### 2. Double-Entry Ledger System
-Instead of simply updating a balance, every financial movement creates a permanent Audit Log.
-* **Debit/Credit:** Every transfer creates two transaction records (one DEBIT, one CREDIT).
-* **Auditability:** The sum of all transaction history can be reconciled against the current balance.
+### 1. Create Wallet
+`GET /wallets?username=Alice`
+Initializes a new wallet with a default balance of ₹100.
 
-### 3. ACID Transactions
-All transfers are atomic. If the "Credit" step fails, the "Debit" step rolls back automatically using Spring's `@Transactional` management.
+### 2. Idempotent Transfer
+`GET /wallets/transfer?from=1&to=2&amount=30&key=UNIQUE_ID`
+Performs a secure transfer. Use a unique `key` for every request.
 
-## 🛠️ How to Run Locally
-
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/YOUR_USERNAME/payment-ledger.git](https://github.com/YOUR_USERNAME/payment-ledger.git)
-    ```
-2.  **Configure Database:**
-    Update `src/main/resources/application.properties` with your Postgres credentials.
-3.  **Run the App:**
-    ```bash
-    ./mvnw spring-boot:run
-    ```
-4.  **Test Endpoints:**
-    * Create Wallet: `GET /wallets?username=Alice`
-    * Transfer Funds: `GET /wallets/transfer?from=1&to=2&amount=50`
+---
+*Developed for high-concurrency environments.*
