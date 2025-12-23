@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    // Standard CRUD is enough for now
+    // This naming convention tells Spring Data JPA to write the SQL query for us
+    boolean existsByIdempotencyKey(String idempotencyKey);
 }
